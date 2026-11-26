@@ -1,0 +1,105 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "let",
+      "name": "motion",
+      "value": {
+        "function": "detectMotion",
+        "args": []
+      }
+    },
+    {
+      "type": "if",
+      "condition": {
+        "var": "motion"
+      },
+      "then": [
+        {
+          "type": "set",
+          "name": "timingQuiet",
+          "value": false
+        },
+        {
+          "type": "call",
+          "function": "turnLEDOn",
+          "args": []
+        },
+        {
+          "type": "call",
+          "function": "turnBuzzerOn",
+          "args": []
+        }
+      ],
+      "else": [
+        {
+          "type": "if",
+          "condition": {
+            "op": "not",
+            "args": [
+              {
+                "var": "timingQuiet"
+              }
+            ]
+          },
+          "then": [
+            {
+              "type": "set",
+              "name": "quietStartedAt",
+              "value": {
+                "function": "NOW_MS",
+                "args": []
+              }
+            },
+            {
+              "type": "set",
+              "name": "timingQuiet",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "if",
+          "condition": {
+            "op": ">=",
+            "args": [
+              {
+                "function": "ELAPSED_MS",
+                "args": [
+                  {
+                    "var": "quietStartedAt"
+                  }
+                ]
+              },
+              1000
+            ]
+          },
+          "then": [
+            {
+              "type": "call",
+              "function": "turnLEDOff",
+              "args": []
+            },
+            {
+              "type": "call",
+              "function": "turnBuzzerOff",
+              "args": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "state": [
+    {
+      "name": "timingQuiet",
+      "type": "bool",
+      "value": false
+    },
+    {
+      "name": "quietStartedAt",
+      "type": "timestamp",
+      "value": 0
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "let",
+      "name": "temp",
+      "value": {
+        "function": "temperature",
+        "args": []
+      }
+    },
+    {
+      "type": "if",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "function": "validReading",
+            "args": [
+              {
+                "var": "temp"
+              }
+            ]
+          },
+          {
+            "op": ">",
+            "args": [
+              {
+                "var": "temp"
+              },
+              30
+            ]
+          }
+        ]
+      },
+      "then": [
+        {
+          "type": "if",
+          "condition": {
+            "op": "<",
+            "args": [
+              {
+                "var": "highCount"
+              },
+              3
+            ]
+          },
+          "then": [
+            {
+              "type": "set",
+              "name": "highCount",
+              "value": {
+                "op": "+",
+                "args": [
+                  {
+                    "var": "highCount"
+                  },
+                  1
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "else": [
+        {
+          "type": "set",
+          "name": "highCount",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "type": "if",
+      "condition": {
+        "op": ">=",
+        "args": [
+          {
+            "var": "highCount"
+          },
+          3
+        ]
+      },
+      "then": [
+        {
+          "type": "call",
+          "function": "turnBuzzerOn",
+          "args": []
+        }
+      ],
+      "else": [
+        {
+          "type": "call",
+          "function": "turnBuzzerOff",
+          "args": []
+        }
+      ]
+    },
+    {
+      "type": "wait",
+      "duration_ms": 2000
+    }
+  ],
+  "state": [
+    {
+      "name": "highCount",
+      "type": "int32",
+      "value": 0
+    }
+  ]
+}

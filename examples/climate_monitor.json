@@ -1,0 +1,128 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "let",
+      "name": "t",
+      "value": {
+        "function": "temperature",
+        "args": []
+      }
+    },
+    {
+      "type": "let",
+      "name": "h",
+      "value": {
+        "function": "humidity",
+        "args": []
+      }
+    },
+    {
+      "type": "if",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "function": "validReading",
+            "args": [
+              {
+                "var": "t"
+              }
+            ]
+          },
+          {
+            "function": "validReading",
+            "args": [
+              {
+                "var": "h"
+              }
+            ]
+          }
+        ]
+      },
+      "then": [
+        {
+          "type": "if",
+          "condition": {
+            "op": "and",
+            "args": [
+              {
+                "op": ">=",
+                "args": [
+                  {
+                    "var": "t"
+                  },
+                  30
+                ]
+              },
+              {
+                "op": "or",
+                "args": [
+                  {
+                    "op": ">",
+                    "args": [
+                      {
+                        "var": "h"
+                      },
+                      70
+                    ]
+                  },
+                  {
+                    "function": "buttonPressed",
+                    "args": []
+                  }
+                ]
+              }
+            ]
+          },
+          "then": [
+            {
+              "type": "call",
+              "function": "turnLEDOn",
+              "args": []
+            }
+          ],
+          "else": [
+            {
+              "type": "call",
+              "function": "turnLEDOff",
+              "args": []
+            }
+          ]
+        },
+        {
+          "type": "call",
+          "function": "reportValue",
+          "args": [
+            {
+              "op": "+",
+              "args": [
+                {
+                  "op": "*",
+                  "args": [
+                    {
+                      "var": "t"
+                    },
+                    1.8
+                  ]
+                },
+                32
+              ]
+            }
+          ]
+        }
+      ],
+      "else": [
+        {
+          "type": "call",
+          "function": "turnLEDOff",
+          "args": []
+        }
+      ]
+    },
+    {
+      "type": "wait",
+      "duration_ms": 2000
+    }
+  ]
+}

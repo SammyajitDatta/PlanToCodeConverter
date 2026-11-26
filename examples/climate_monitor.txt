@@ -1,0 +1,12 @@
+LOOP:
+    LET t = temperature()
+    LET h = humidity()
+    IF validReading(t) AND validReading(h):
+        IF t >= 30 AND (h > 70 OR buttonPressed()):
+            CALL turnLEDOn()
+        ELSE:
+            CALL turnLEDOff()
+        CALL reportValue(t * 1.8 + 32)
+    ELSE:
+        CALL turnLEDOff()
+    WAIT 2000ms

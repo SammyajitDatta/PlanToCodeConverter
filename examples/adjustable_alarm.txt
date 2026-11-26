@@ -1,0 +1,8 @@
+LOOP:
+    LET temp = temperature()
+    LET limit = 20 + readKnob() / 4095 * 20
+    IF validReading(temp) AND temp > limit AND NOT buttonPressed():
+        CALL turnBuzzerOn()
+    ELSE:
+        CALL turnBuzzerOff()
+    WAIT 2000ms

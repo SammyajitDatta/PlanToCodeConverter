@@ -1,0 +1,8 @@
+LOOP:
+    LET temp = temperature()
+    CALL reportValue(temp)
+    IF validReading(temp) AND temp > 30:
+        CALL turnBuzzerOn()
+    ELSE:
+        CALL turnBuzzerOff()
+    WAIT 2000ms

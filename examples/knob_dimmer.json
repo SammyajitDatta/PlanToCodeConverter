@@ -1,0 +1,24 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "call",
+      "function": "setBrightness",
+      "args": [
+        {
+          "function": "scaleKnob",
+          "args": [
+            {
+              "function": "readKnob",
+              "args": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "wait",
+      "duration_ms": 25
+    }
+  ]
+}

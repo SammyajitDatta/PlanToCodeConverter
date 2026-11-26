@@ -1,0 +1,15 @@
+STATE highCount: int32 = 0
+
+LOOP:
+    LET temp = temperature()
+    IF validReading(temp) AND temp > 30:
+        IF highCount < 3:
+            SET highCount = highCount + 1
+    ELSE:
+        SET highCount = 0
+
+    IF highCount >= 3:
+        CALL turnBuzzerOn()
+    ELSE:
+        CALL turnBuzzerOff()
+    WAIT 2000ms

@@ -1,0 +1,12 @@
+LOOP:
+    IF detectMotion():
+        CALL turnLEDOn()
+    ELSE:
+        WAIT 250ms
+        IF detectMotion():
+            CALL turnLEDOn()
+            CALL turnBuzzerOn()
+            WAIT 100ms
+            CALL turnBuzzerOff()
+        ELSE:
+            CALL turnLEDOff()

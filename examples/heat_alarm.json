@@ -1,0 +1,65 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "let",
+      "name": "temp",
+      "value": {
+        "function": "temperature",
+        "args": []
+      }
+    },
+    {
+      "type": "call",
+      "function": "reportValue",
+      "args": [
+        {
+          "var": "temp"
+        }
+      ]
+    },
+    {
+      "type": "if",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "function": "validReading",
+            "args": [
+              {
+                "var": "temp"
+              }
+            ]
+          },
+          {
+            "op": ">",
+            "args": [
+              {
+                "var": "temp"
+              },
+              30
+            ]
+          }
+        ]
+      },
+      "then": [
+        {
+          "type": "call",
+          "function": "turnBuzzerOn",
+          "args": []
+        }
+      ],
+      "else": [
+        {
+          "type": "call",
+          "function": "turnBuzzerOff",
+          "args": []
+        }
+      ]
+    },
+    {
+      "type": "wait",
+      "duration_ms": 2000
+    }
+  ]
+}

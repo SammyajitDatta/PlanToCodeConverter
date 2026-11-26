@@ -1,0 +1,18 @@
+STATE timingQuiet: bool = false
+STATE quietStartedAt: timestamp = 0
+
+LOOP:
+    LET motion = detectMotion()
+
+    IF motion:
+        SET timingQuiet = false
+        CALL turnLEDOn()
+        CALL turnBuzzerOn()
+    ELSE:
+        IF NOT timingQuiet:
+            SET quietStartedAt = NOW_MS()
+            SET timingQuiet = true
+
+        IF ELAPSED_MS(quietStartedAt) >= 1000:
+            CALL turnLEDOff()
+            CALL turnBuzzerOff()

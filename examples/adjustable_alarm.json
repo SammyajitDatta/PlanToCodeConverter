@@ -1,0 +1,93 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "let",
+      "name": "temp",
+      "value": {
+        "function": "temperature",
+        "args": []
+      }
+    },
+    {
+      "type": "let",
+      "name": "limit",
+      "value": {
+        "op": "+",
+        "args": [
+          20,
+          {
+            "op": "*",
+            "args": [
+              {
+                "op": "/",
+                "args": [
+                  {
+                    "function": "readKnob",
+                    "args": []
+                  },
+                  4095
+                ]
+              },
+              20
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "if",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "function": "validReading",
+            "args": [
+              {
+                "var": "temp"
+              }
+            ]
+          },
+          {
+            "op": ">",
+            "args": [
+              {
+                "var": "temp"
+              },
+              {
+                "var": "limit"
+              }
+            ]
+          },
+          {
+            "op": "not",
+            "args": [
+              {
+                "function": "buttonPressed",
+                "args": []
+              }
+            ]
+          }
+        ]
+      },
+      "then": [
+        {
+          "type": "call",
+          "function": "turnBuzzerOn",
+          "args": []
+        }
+      ],
+      "else": [
+        {
+          "type": "call",
+          "function": "turnBuzzerOff",
+          "args": []
+        }
+      ]
+    },
+    {
+      "type": "wait",
+      "duration_ms": 2000
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "type": "loop",
+  "body": [
+    {
+      "type": "call",
+      "function": "turnBuzzerOff",
+      "args": []
+    },
+    {
+      "type": "if",
+      "condition": {
+        "function": "detectMotion",
+        "args": []
+      },
+      "then": [
+        {
+          "type": "call",
+          "function": "turnLEDOn",
+          "args": []
+        },
+        {
+          "type": "wait",
+          "duration_ms": 500
+        },
+        {
+          "type": "if",
+          "condition": {
+            "function": "detectMotion",
+            "args": []
+          },
+          "then": [
+            {
+              "type": "call",
+              "function": "turnBuzzerOn",
+              "args": []
+            },
+            {
+              "type": "wait",
+              "duration_ms": 250
+            },
+            {
+              "type": "call",
+              "function": "turnBuzzerOff",
+              "args": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "call",
+      "function": "turnLEDOff",
+      "args": []
+    }
+  ]
+}

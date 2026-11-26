@@ -1,0 +1,154 @@
+[pins.PIR_PIN]
+gpio = 27
+mode = "INPUT"
+
+[pins.LED_PIN]
+gpio = 25
+mode = "OUTPUT"
+initial = "LOW"
+
+[pins.BUZZER_PIN]
+gpio = 33
+mode = "OUTPUT"
+initial = "LOW"
+
+[functions.detectMotion]
+returns = "bool"
+pins = ["PIR_PIN"]
+definition = """
+bool detectMotion() {
+  return digitalRead(PIR_PIN) == HIGH;
+}
+"""
+
+[functions.turnLEDOn]
+returns = "void"
+pins = ["LED_PIN"]
+definition = """
+void turnLEDOn() {
+  digitalWrite(LED_PIN, HIGH);
+}
+"""
+
+[functions.turnLEDOff]
+returns = "void"
+pins = ["LED_PIN"]
+definition = """
+void turnLEDOff() {
+  digitalWrite(LED_PIN, LOW);
+}
+"""
+
+[functions.turnBuzzerOn]
+returns = "void"
+pins = ["BUZZER_PIN"]
+definition = """
+void turnBuzzerOn() {
+  digitalWrite(BUZZER_PIN, HIGH);
+}
+"""
+
+[functions.turnBuzzerOff]
+returns = "void"
+pins = ["BUZZER_PIN"]
+definition = """
+void turnBuzzerOff() {
+  digitalWrite(BUZZER_PIN, LOW);
+}
+"""
+
+[pins.DHT_PIN]
+gpio = 26
+mode = "INPUT"
+
+[pins.POT_PIN]
+gpio = 34
+mode = "INPUT"
+
+[pins.BUTTON_PIN]
+gpio = 32
+mode = "INPUT_PULLUP"
+
+[modules.dht]
+includes = ["DHT.h"]
+declarations = "DHT dht(DHT_PIN, DHT11);"
+setup = ["dht.begin();"]
+
+[modules.serial]
+setup = ["Serial.begin(115200);"]
+
+[functions.temperature]
+returns = "float"
+pins = ["DHT_PIN"]
+modules = ["dht"]
+definition = """
+float temperature() {
+  return dht.readTemperature();
+}
+"""
+
+[functions.humidity]
+returns = "float"
+pins = ["DHT_PIN"]
+modules = ["dht"]
+definition = """
+float humidity() {
+  return dht.readHumidity();
+}
+"""
+
+[functions.validReading]
+returns = "bool"
+args = ["float"]
+definition = """
+bool validReading(float value) {
+  return isfinite(value);
+}
+"""
+
+[functions.readKnob]
+returns = "int32"
+pins = ["POT_PIN"]
+definition = """
+int32_t readKnob() {
+  return analogRead(POT_PIN);
+}
+"""
+
+[functions.buttonPressed]
+returns = "bool"
+pins = ["BUTTON_PIN"]
+definition = """
+bool buttonPressed() {
+  return digitalRead(BUTTON_PIN) == LOW;
+}
+"""
+
+[functions.setBrightness]
+returns = "void"
+args = ["int32"]
+pins = ["LED_PIN"]
+definition = """
+void setBrightness(int32_t level) {
+  analogWrite(LED_PIN, constrain(level, 0L, 255L));
+}
+"""
+
+[functions.scaleKnob]
+returns = "int32"
+args = ["int32"]
+definition = """
+int32_t scaleKnob(int32_t reading) {
+  return map(constrain(reading, 0L, 4095L), 0, 4095, 0, 255);
+}
+"""
+
+[functions.reportValue]
+returns = "void"
+args = ["float"]
+modules = ["serial"]
+definition = """
+void reportValue(float value) {
+  Serial.println(value);
+}
+"""
